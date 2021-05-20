@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2021_02_25_234752) do
     t.string "auth0_uid"
     t.string "first_name"
     t.string "last_name"
+    t.string "phone_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_user_accounts_on_email", unique: true

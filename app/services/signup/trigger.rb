@@ -1,17 +1,25 @@
-class Signup
+module Signup
   class Trigger < ApplicationService
+    attr_writer :siret_lokup, :auth0_uid
+    
     def initialize(params)
+      @params = params
     end
 
     def process
+      user
     end
 
     private
 
     def user
-      # Précision champ spécifique :
-      #
-      # UserAccount.create(..., auth0_uid: auth0_user_id)
+      UserAccount.create(
+        email: @params[:email],
+        phone_number: @params[:phone_number],
+        first_name: @params[:firt_name],
+        last_name: @params[:last_name],
+        auth0_uid: auth0_user_id
+      )
     end
 
     def company
@@ -33,7 +41,10 @@ class Signup
     end
 
     def auth0_user_id
-      # @auth0_user ||= ::Auth0::User::Create.process(...)['user_id']
+      @auth0_user ||= ::Auth0::User::Create.process(
+        @params[:email],
+        @params[:password]
+      )[:user_id]
     end
   end
 end

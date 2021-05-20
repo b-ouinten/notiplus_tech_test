@@ -11,7 +11,7 @@ module Auth0
       end
 
       def process
-        # left empty on purpose
+        { user_id: SecureRandom.uuid }
       end
     end
   end
