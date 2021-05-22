@@ -7,6 +7,7 @@ module Signup
     end
 
     def process
+      member
     end
 
     private

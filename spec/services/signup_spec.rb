@@ -29,7 +29,7 @@ RSpec.describe Signup::Trigger, type: :service do
   end
   
   describe 'company method' do
-    it 'should create an instance of BrandCompany when ape_code is valid' do
+    it 'should create an instance of Brand::Company when ape_code is valid' do
       company = @trigger.send(:company)
       expect(company).to be_a Brand::Company
       expect(company).to be_valid
@@ -42,7 +42,7 @@ RSpec.describe Signup::Trigger, type: :service do
   end
 
   describe 'account method' do
-    it 'should create an instance of BrandAccount' do
+    it 'should create an instance of Brand::Account' do
       account = @trigger.send(:account)
       expect(account).to be_a Brand::Account 
       expect(account).to be_valid 
@@ -50,10 +50,20 @@ RSpec.describe Signup::Trigger, type: :service do
   end
 
   describe 'member method' do
-    it 'should create an instance of BrandMember' do
+    it 'should create an instance of Brand::Member' do
       member = @trigger.send(:member)
       expect(member).to be_a Brand::Member
       expect(member).to be_valid
+    end
+  end
+
+  describe 'process' do
+    it 'should create both a UserAccount, a Brand::Company, a Brand::Account and a Brand::Member' do
+      expect{ @trigger.process }
+      .to change(UserAccount, :count).by(1)
+      .and change(Brand::Company, :count).by(1)
+      .and change(Brand::Account, :count).by(1)
+      .and change(Brand::Member, :count).by(1)
     end
   end
 end
