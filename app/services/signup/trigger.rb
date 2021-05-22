@@ -42,8 +42,10 @@ module Signup
     end
 
     def member
+      brand_account = account
       Brand::Member.create(
-        
+        user_account: brand_account.brand_company.owner,
+        brand_account: brand_account
       )
     end
     

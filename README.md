@@ -56,11 +56,11 @@ Soit l'input suivant (`params` de la méthode `initialize` app/services/signup/t
   La compagnie reçoit un siren_number (les 9 premiers chiffres d'un numéro de siret)
 
 3. **Créer un brand (`Brand::Account`)**  
-  Il appartient à la `Brand::Company` créé en 2.  
-  Le label est par defaut le même que la `Brand::Company` créer en 2.  
+  Il appartient à la `Brand::Company` créée en 2.  
+  Le label est par defaut le même que la `Brand::Company` créé en 2.  
   Le siret_number est celui envoyé dans le payload initial
 
 4. **Créer un membre de la brand (`Brand::Member`)**  
-  Le `Brand::Member` a créer appartient au `Brand::Account` créée en 3. et au `User::Account` créé en 1.
+  Le `Brand::Member` à créer appartient au `Brand::Account` créé en 3. et au `User::Account` créé en 1.
 
 **• Réaliser une spec validant la création des différents objets cités (`UserAccount`, `Brand::Company`, `Brand::Account` et `Brand::Member`)**

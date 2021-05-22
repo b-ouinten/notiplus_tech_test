@@ -48,4 +48,12 @@ RSpec.describe Signup::Trigger, type: :service do
       expect(account).to be_valid 
     end
   end
+
+  describe 'member method' do
+    it 'should create an instance of BrandMember' do
+      member = @trigger.send(:member)
+      expect(member).to be_a Brand::Member
+      expect(member).to be_valid
+    end
+  end
 end
