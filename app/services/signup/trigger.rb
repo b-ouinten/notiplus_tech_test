@@ -22,12 +22,28 @@ module Signup
     end
 
     def company
-      raise Signup::Exception.new(msg: 'ape_code is invalid!', type: 'ape_code') if not ape_code_valid?
+      # use the exception type to manage exception in controllers
+      raise Signup::Exception.new(msg: 'ape_code is invalid!', type: 'ape_code') if not ape_code_valid? 
 
       Brand::Company.create(
         owner: user,
-        siren_number: @params[:siret] && @params[:siret].slice(0, 9),
-        label: siret_lookup.dig(:uniteLegale, :periodesUniteLegale, 0, :nomUniteLegale)
+        label: siret_lookup.dig(:uniteLegale, :periodesUniteLegale, 0, :nomUniteLegale),
+        siren_number: @params[:siret] && @params[:siret].slice(0, 9)
+      )
+    end
+
+    def account
+      brand_company = company
+      Brand::Account.create(
+        brand_company: brand_company,
+        label: brand_company.label,
+        siret_number: @params[:siret]
+      )
+    end
+
+    def member
+      Brand::Member.create(
+        
       )
     end
     
@@ -46,6 +62,7 @@ module Signup
         @params[:password]
       )['user_id']
     rescue
+      # use the exception type to manage exception in controllers
       raise Signup::Exception.new(msg: 'user_id is empty!', type: 'user_id')
     end
   end

@@ -40,4 +40,12 @@ RSpec.describe Signup::Trigger, type: :service do
       expect{ @trigger.send(:company) }.to raise_error(Signup::Exception, 'ape_code is invalid!')
     end
   end
+
+  describe 'account method' do
+    it 'should create an instance of BrandAccount' do
+      account = @trigger.send(:account)
+      expect(account).to be_a Brand::Account 
+      expect(account).to be_valid 
+    end
+  end
 end
