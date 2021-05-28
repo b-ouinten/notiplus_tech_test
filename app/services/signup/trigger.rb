@@ -3,7 +3,11 @@ module Signup
     attr_accessor :siret_lookup_mock, :auth0_user_id_mock
     
     def initialize(params)
-      @params = params
+      @email = params[:email]
+      @phone_number = params[:phone_number]
+      @first_name = params[:first_name]
+      @last_name = params[:last_name],
+      @siret = params[:siret]
     end
 
     def process
@@ -14,10 +18,10 @@ module Signup
 
     def user
       UserAccount.create(
-        email: @params[:email],
-        phone_number: @params[:phone_number],
-        first_name: @params[:first_name],
-        last_name: @params[:last_name],
+        email: @email,
+        phone_number: @phone_number,
+        first_name: @first_name,
+        last_name: @last_name,
         auth0_uid: auth0_user_id
       )
     end
@@ -29,7 +33,7 @@ module Signup
       Brand::Company.create(
         owner: user,
         label: siret_lookup.dig(:uniteLegale, :periodesUniteLegale, 0, :nomUniteLegale),
-        siren_number: @params[:siret] && @params[:siret].slice(0, 9)
+        siren_number: @siret && @siret.slice(0, 9)
       )
     end
 
@@ -38,7 +42,7 @@ module Signup
       Brand::Account.create(
         brand_company: brand_company,
         label: brand_company.label,
-        siret_number: @params[:siret]
+        siret_number: @siret
       )
     end
 
@@ -56,13 +60,13 @@ module Signup
     end
 
     def siret_lookup
-      @siret_lookup_mock ||= ::Siret::Lookup.process(@params[:siret])
+      @siret_lookup_mock ||= ::Siret::Lookup.process(@siret)
     end
 
     def auth0_user_id
       @auth0_user_id_mock ||= ::Auth0::User::Create.process(
-        @params[:email],
-        @params[:password]
+        @email,
+        @password
       )['user_id']
     rescue
       # use the exception type to manage exception in controllers
